@@ -1,6 +1,6 @@
 # diffComparison — Comparador de similitud de código Python
 
-Detecta similitud entre programas Python usando tres estrategias: texto plano, tokens normalizados y suffix array.
+Detecta similitud entre programas Python usando cuatro estrategias: texto plano con difflib, tokens normalizados con difflib, suffix array con texto plano y suffix array con tokens.
 
 ## Requisitos
 
