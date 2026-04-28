@@ -47,6 +47,8 @@ tokens = [
     'GE',
     'EQ',
     'NEQ',
+    'AND',
+    'OR',
     'STR'
 ]+ list(reserved_words.values())
 
@@ -54,8 +56,10 @@ t_LE = r'<='
 t_GE = r'>='
 t_EQ = r'=='
 t_NEQ = r'!='
+t_AND = r'&&'
+t_OR = r'\|\|'
 
-literals = '+*/-(){},;='
+literals = '!+*/-(){},;=<>%'
 
 def t_ID(t):
     r'[a-z][a-zA-Z0-9]*'
@@ -84,6 +88,74 @@ while True:
     print(t)
     if t == None:
         break
+
+def p_Program(p):
+    """
+    Program : INT ID '(' ')' '{' Declarations Statements '}'
+    """
+
+def p_Declarations(p):
+    """
+    Declarations : EPSILON
+    """
+
+def p_Statements(p):
+    """
+    Statements : Statements Statement
+        | EPSILON
+    """
+
+def p_Statement(p):
+    """
+    Statement : ';'
+        | Block
+        | Assignment
+        | WhileStatement
+    """
+
+def p_WhileStatement(p):
+    """
+    WhileStatement : WHILE '(' Expression ')' Block
+    """
+
+def p_Block(p):
+    """
+    Block : '{' Statements '}'
+    """
+
+def p_EPSILON(p):
+    """
+    EPSILON :
+    """
+
+def p_Assignment(p):
+    """
+    Assignment : ID '=' Expression ';'
+    """
+
+def p_Expression(p):
+    """
+    Expression : Expression OR Conjunction
+        | Conjunction
+    """
+
+def p_Conjunction(p):
+    """
+    Conjunction : Conjunction AND Equality
+        | Equality
+    """
+
+def p_Equality(p):
+    """
+    Equality : Equality EquOp Relation
+        | Relation
+    """
+
+def p_EquOp(p):
+    """
+    EquOp : EQ
+        | NEQ
+    """
 
 def p_Relation(p):
     """
@@ -122,7 +194,7 @@ def p_Primary(p):
     Primary : ID 
         | INTLIT 
         | FLOATLIT 
-        | '(' Addition ')'
+        | '(' Expression ')'
     """
 
 def p_UnaryOp(p):
@@ -145,7 +217,14 @@ def p_Factor(p):
     """
 
 program = """
-(3.1415 * r * r) >= 50.0
+int factorial(){
+    f = 1;
+    i = 1;
+    while (i<n){
+        f = f*i
+        i=i+1;
+    }
+}
 """
 
 parser = yacc.yacc()
