@@ -3,6 +3,35 @@ import ply.yacc as yacc
 
 from visitors import Calculator, Literal, BinaryOp
 
+"""
+  Program         ⇒  int  main ( ) { Declarations Statements }
+  Declarations    ⇒  { Declaration }
+  Declaration     ⇒  Type  Identifier  ;
+  Type            ⇒  int | bool | float | char
+  Statements      ⇒  { Statement }
+  Statement       ⇒  ; | Block | Assignment | IfStatement | WhileStatement
+  Block           ⇒  { Statements }
+  Assignment      ⇒  Identifier = Expression ;
+  IfStatement     ⇒  if ( Expression ) Statement [ else Statement ]
+
+  WhileStatement  ⇒  while ( Expression ) Statement  
+  Expression      ⇒  Conjunction { || Conjunction }
+  Conjunction     ⇒  Equality { && Equality }
+
+  Equality        ⇒  Relation [ EquOp Relation ]
+  EquOp           ⇒  == | != 
+  Relation        ⇒  Addition [ RelOp Addition ]
+
+  RelOp           ⇒  < | <= | > | >= 
+
+  Addition        ⇒  Term { AddOp Term }
+  AddOp           ⇒  + | -
+  Term            ⇒  Factor { MulOp Factor }
+  MulOp           ⇒  * | / | %
+  Factor          ⇒  [ UnaryOp ] Primary
+  UnaryOp         ⇒  - | !
+  Primary         ⇒  Identifier | IntLit | FloatLit |  ( Expression )
+"""
 
 reserved_words = {
     'int': 'INT',
@@ -26,7 +55,7 @@ t_GE = r'>='
 t_EQ = r'=='
 t_NEQ = r'!='
 
-literals = '!+-*/%()'
+literals = '+*/-(){},;='
 
 def t_ID(t):
     r'[a-z][a-zA-Z0-9]*'
@@ -56,18 +85,50 @@ while True:
     if t == None:
         break
 
-def p_Primary(p):
+def p_Relation(p):
     """
-    Primary : ID 
-        | INTLIT 
-        | FLOATLIT 
-        | '(' Term ')'
+    Relation : Relation RelOp Addition
+        | Addition
+    """
+
+def p_RelOp(p):
+    """
+    RelOp : '<' 
+        | LE 
+        | '>' 
+        | GE
+    """
+
+def p_Addition(p):
+    """
+    Addition : Addition AddOp Term
+        | Term
+    """
+
+def p_AddOp(p):
+    """
+    AddOp : '+' 
+        | '-'
     """
 
 def p_Term(p):
     """
     Term : Term MulOp Factor
         | Factor
+    """
+
+def p_Primary(p):
+    """
+    Primary : ID 
+        | INTLIT 
+        | FLOATLIT 
+        | '(' Addition ')'
+    """
+
+def p_UnaryOp(p):
+    """
+    UnaryOp : '-'
+        | '!'
     """
 
 def p_MulOp(p):
@@ -79,12 +140,12 @@ def p_MulOp(p):
 
 def p_Factor(p):
     """
-    Factor : '!' Primary
+    Factor : UnaryOp Primary
         | Primary
     """
 
 program = """
-!(3.1415)
+(3.1415 * r * r) >= 50.0
 """
 
 parser = yacc.yacc()
