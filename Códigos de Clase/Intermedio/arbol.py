@@ -2,7 +2,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any
 
-class ASTNode(ABC):
+class ASTNode(ABC): #Abstract Based Class = ABC
     @abstractmethod
     def accept(self, visitor: Visitor) -> None:
         pass
@@ -14,6 +14,9 @@ class Literal(ASTNode):
 
     def accept(self, visitor: Visitor):
         visitor.visit_literal(self)
+
+    def _str_(self):
+        return f"[LIT, {self.value}]"
 
 class Variable(ASTNode):
     def __init__(self, name: Any, type: str) -> None:
@@ -31,6 +34,9 @@ class BinaryOp(ASTNode):
 
     def accept(self, visitor: Visitor):
         visitor.visit_binary_op(self)
+
+    def _str_(self):
+        return f"[{self.op}, {self.lhs}, {self.rhs}]"
 
 class Visitor(ABC):
     @abstractmethod
@@ -50,6 +56,9 @@ class Calculator(Visitor):
     def visit_literal(self, node: Literal) -> None:
         self.stack.append(node.value)
     
+    def visit_variable(self, node: Variable) -> None:
+        pass
+
     def visit_binary_op(self, node: BinaryOp) -> None:
         node.lhs.accept(self)
         node.rhs.accept(self)

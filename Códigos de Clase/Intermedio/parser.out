@@ -1,0 +1,291 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ID
+
+Grammar
+
+Rule 0     S' -> Expression
+Rule 1     Expression -> Expression + Term
+Rule 2     Expression -> Expression - Term
+Rule 3     Expression -> Term
+Rule 4     Term -> Term * Factor
+Rule 5     Term -> Term / Factor
+Rule 6     Term -> Term % Factor
+Rule 7     Term -> Factor
+Rule 8     Factor -> INTLIT
+Rule 9     Factor -> ( Expression )
+
+Terminals, with rules where they appear
+
+%                    : 6
+(                    : 9
+)                    : 9
+*                    : 4
++                    : 1
+-                    : 2
+/                    : 5
+ID                   : 
+INTLIT               : 8
+error                : 
+
+Nonterminals, with rules where they appear
+
+Expression           : 1 2 9 0
+Factor               : 4 5 6 7
+Term                 : 1 2 3 4 5 6
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Expression
+    (1) Expression -> . Expression + Term
+    (2) Expression -> . Expression - Term
+    (3) Expression -> . Term
+    (4) Term -> . Term * Factor
+    (5) Term -> . Term / Factor
+    (6) Term -> . Term % Factor
+    (7) Term -> . Factor
+    (8) Factor -> . INTLIT
+    (9) Factor -> . ( Expression )
+
+    INTLIT          shift and go to state 4
+    (               shift and go to state 5
+
+    Expression                     shift and go to state 1
+    Term                           shift and go to state 2
+    Factor                         shift and go to state 3
+
+state 1
+
+    (0) S' -> Expression .
+    (1) Expression -> Expression . + Term
+    (2) Expression -> Expression . - Term
+
+    +               shift and go to state 6
+    -               shift and go to state 7
+
+
+state 2
+
+    (3) Expression -> Term .
+    (4) Term -> Term . * Factor
+    (5) Term -> Term . / Factor
+    (6) Term -> Term . % Factor
+
+    +               reduce using rule 3 (Expression -> Term .)
+    -               reduce using rule 3 (Expression -> Term .)
+    $end            reduce using rule 3 (Expression -> Term .)
+    )               reduce using rule 3 (Expression -> Term .)
+    *               shift and go to state 8
+    /               shift and go to state 9
+    %               shift and go to state 10
+
+
+state 3
+
+    (7) Term -> Factor .
+
+    *               reduce using rule 7 (Term -> Factor .)
+    /               reduce using rule 7 (Term -> Factor .)
+    %               reduce using rule 7 (Term -> Factor .)
+    +               reduce using rule 7 (Term -> Factor .)
+    -               reduce using rule 7 (Term -> Factor .)
+    $end            reduce using rule 7 (Term -> Factor .)
+    )               reduce using rule 7 (Term -> Factor .)
+
+
+state 4
+
+    (8) Factor -> INTLIT .
+
+    *               reduce using rule 8 (Factor -> INTLIT .)
+    /               reduce using rule 8 (Factor -> INTLIT .)
+    %               reduce using rule 8 (Factor -> INTLIT .)
+    +               reduce using rule 8 (Factor -> INTLIT .)
+    -               reduce using rule 8 (Factor -> INTLIT .)
+    $end            reduce using rule 8 (Factor -> INTLIT .)
+    )               reduce using rule 8 (Factor -> INTLIT .)
+
+
+state 5
+
+    (9) Factor -> ( . Expression )
+    (1) Expression -> . Expression + Term
+    (2) Expression -> . Expression - Term
+    (3) Expression -> . Term
+    (4) Term -> . Term * Factor
+    (5) Term -> . Term / Factor
+    (6) Term -> . Term % Factor
+    (7) Term -> . Factor
+    (8) Factor -> . INTLIT
+    (9) Factor -> . ( Expression )
+
+    INTLIT          shift and go to state 4
+    (               shift and go to state 5
+
+    Expression                     shift and go to state 11
+    Term                           shift and go to state 2
+    Factor                         shift and go to state 3
+
+state 6
+
+    (1) Expression -> Expression + . Term
+    (4) Term -> . Term * Factor
+    (5) Term -> . Term / Factor
+    (6) Term -> . Term % Factor
+    (7) Term -> . Factor
+    (8) Factor -> . INTLIT
+    (9) Factor -> . ( Expression )
+
+    INTLIT          shift and go to state 4
+    (               shift and go to state 5
+
+    Term                           shift and go to state 12
+    Factor                         shift and go to state 3
+
+state 7
+
+    (2) Expression -> Expression - . Term
+    (4) Term -> . Term * Factor
+    (5) Term -> . Term / Factor
+    (6) Term -> . Term % Factor
+    (7) Term -> . Factor
+    (8) Factor -> . INTLIT
+    (9) Factor -> . ( Expression )
+
+    INTLIT          shift and go to state 4
+    (               shift and go to state 5
+
+    Term                           shift and go to state 13
+    Factor                         shift and go to state 3
+
+state 8
+
+    (4) Term -> Term * . Factor
+    (8) Factor -> . INTLIT
+    (9) Factor -> . ( Expression )
+
+    INTLIT          shift and go to state 4
+    (               shift and go to state 5
+
+    Factor                         shift and go to state 14
+
+state 9
+
+    (5) Term -> Term / . Factor
+    (8) Factor -> . INTLIT
+    (9) Factor -> . ( Expression )
+
+    INTLIT          shift and go to state 4
+    (               shift and go to state 5
+
+    Factor                         shift and go to state 15
+
+state 10
+
+    (6) Term -> Term % . Factor
+    (8) Factor -> . INTLIT
+    (9) Factor -> . ( Expression )
+
+    INTLIT          shift and go to state 4
+    (               shift and go to state 5
+
+    Factor                         shift and go to state 16
+
+state 11
+
+    (9) Factor -> ( Expression . )
+    (1) Expression -> Expression . + Term
+    (2) Expression -> Expression . - Term
+
+    )               shift and go to state 17
+    +               shift and go to state 6
+    -               shift and go to state 7
+
+
+state 12
+
+    (1) Expression -> Expression + Term .
+    (4) Term -> Term . * Factor
+    (5) Term -> Term . / Factor
+    (6) Term -> Term . % Factor
+
+    +               reduce using rule 1 (Expression -> Expression + Term .)
+    -               reduce using rule 1 (Expression -> Expression + Term .)
+    $end            reduce using rule 1 (Expression -> Expression + Term .)
+    )               reduce using rule 1 (Expression -> Expression + Term .)
+    *               shift and go to state 8
+    /               shift and go to state 9
+    %               shift and go to state 10
+
+
+state 13
+
+    (2) Expression -> Expression - Term .
+    (4) Term -> Term . * Factor
+    (5) Term -> Term . / Factor
+    (6) Term -> Term . % Factor
+
+    +               reduce using rule 2 (Expression -> Expression - Term .)
+    -               reduce using rule 2 (Expression -> Expression - Term .)
+    $end            reduce using rule 2 (Expression -> Expression - Term .)
+    )               reduce using rule 2 (Expression -> Expression - Term .)
+    *               shift and go to state 8
+    /               shift and go to state 9
+    %               shift and go to state 10
+
+
+state 14
+
+    (4) Term -> Term * Factor .
+
+    *               reduce using rule 4 (Term -> Term * Factor .)
+    /               reduce using rule 4 (Term -> Term * Factor .)
+    %               reduce using rule 4 (Term -> Term * Factor .)
+    +               reduce using rule 4 (Term -> Term * Factor .)
+    -               reduce using rule 4 (Term -> Term * Factor .)
+    $end            reduce using rule 4 (Term -> Term * Factor .)
+    )               reduce using rule 4 (Term -> Term * Factor .)
+
+
+state 15
+
+    (5) Term -> Term / Factor .
+
+    *               reduce using rule 5 (Term -> Term / Factor .)
+    /               reduce using rule 5 (Term -> Term / Factor .)
+    %               reduce using rule 5 (Term -> Term / Factor .)
+    +               reduce using rule 5 (Term -> Term / Factor .)
+    -               reduce using rule 5 (Term -> Term / Factor .)
+    $end            reduce using rule 5 (Term -> Term / Factor .)
+    )               reduce using rule 5 (Term -> Term / Factor .)
+
+
+state 16
+
+    (6) Term -> Term % Factor .
+
+    *               reduce using rule 6 (Term -> Term % Factor .)
+    /               reduce using rule 6 (Term -> Term % Factor .)
+    %               reduce using rule 6 (Term -> Term % Factor .)
+    +               reduce using rule 6 (Term -> Term % Factor .)
+    -               reduce using rule 6 (Term -> Term % Factor .)
+    $end            reduce using rule 6 (Term -> Term % Factor .)
+    )               reduce using rule 6 (Term -> Term % Factor .)
+
+
+state 17
+
+    (9) Factor -> ( Expression ) .
+
+    *               reduce using rule 9 (Factor -> ( Expression ) .)
+    /               reduce using rule 9 (Factor -> ( Expression ) .)
+    %               reduce using rule 9 (Factor -> ( Expression ) .)
+    +               reduce using rule 9 (Factor -> ( Expression ) .)
+    -               reduce using rule 9 (Factor -> ( Expression ) .)
+    $end            reduce using rule 9 (Factor -> ( Expression ) .)
+    )               reduce using rule 9 (Factor -> ( Expression ) .)
+
