@@ -1,8 +1,8 @@
 import llvmlite.binding as llvm
 
-llvm.initialize()
-llvm.initialize_native_target()
+#llvm.initialize()
 llvm.initialize_native_asmprinter()  # yes, even this one
+llvm.initialize_native_target()
 
 def create_execution_engine():
     """

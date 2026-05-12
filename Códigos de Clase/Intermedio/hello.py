@@ -13,7 +13,7 @@ builder = ir.IRBuilder(entry)
 
 # return 5 + 3; }
 lhs = ir.Constant(intType, 5)
-rhs = intType(3)
+rhs = ir.Constant(intType, 3)
 temp = builder.add(lhs, rhs)
 builder.ret(temp)
 
@@ -35,9 +35,9 @@ print(mod)
 
 # %%
 from llvmlite import binding as llvm
-llvm.initialize()
-llvm.initialize_native_asmprinter()
-llvm.initialize_native_target()
+#llvm.initialize()
+#llvm.initialize_native_asmprinter()
+#llvm.initialize_native_target()
 target = llvm.Target.from_default_triple()
 target_machine = target.create_target_machine(codemodel='default')
 mod = llvm.parse_assembly(str(module))
