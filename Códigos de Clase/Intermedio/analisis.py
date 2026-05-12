@@ -79,7 +79,7 @@ print(calc.stack)
 from arbol import Visitor, Variable
 from llvmlite import ir
 
-intType = ir.IntType(64)
+intType = ir.IntType(32)
 module  = ir.Module(name="prog")
 
 fnty    = ir.FunctionType(intType, [])
@@ -102,9 +102,18 @@ class IRGenerator(Visitor):
         node.rhs.accept(self)
         rhs = self.stack.pop()
         lhs = self.stack.pop()
-        self.stack.append(builder.add(lhs, rhs))
+        if node.op == '+':
+            self.stack.append(builder.add(lhs, rhs))
+        elif node.op == '-':
+            self.stack.append(builder.sub(lhs, rhs))
+        elif node.op == '*':
+            self.stack.append(builder.mul(lhs,rhs))
+        elif node.op == '/':
+            self.stack.append(builder.sdiv(lhs,rhs))
+        elif node.op == "%":
+            self.stack.append(builder.srem(lhs, rhs))
 
-data   = '10 + 3'
+data   = '100 % (2 - 1) + (3 * 5) / 5'
 lexer  = lex.lex()
 parser = yacc.yacc()
 
